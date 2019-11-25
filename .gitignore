@@ -205,4 +205,6 @@ modules.xml
 # Sonarlint plugin
 .idea/sonarlint
 
+venv/
+
 # End of https://www.gitignore.io/api/django,pycharm+all
