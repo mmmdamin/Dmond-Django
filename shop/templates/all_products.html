@@ -1,0 +1,21 @@
+<html>
+
+<body>
+
+<ul>
+    {% for product in products %}
+        <li><a href="{% url 'product' product.id %}">
+            نام محصول:
+            {{ product.name }}
+        </a></li>
+        <li>قیمت:
+            {{ product.price }}</li>
+        <br>
+    {% endfor %}
+</ul>
+تعداد:
+{{ products.count }}
+
+</body>
+
+</html>
