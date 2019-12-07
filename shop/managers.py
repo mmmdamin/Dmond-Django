@@ -3,4 +3,4 @@ from django.db import models
 
 class ActiveManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().first(deactivated=False)
+        return super().get_queryset().filter(deactivated=False)

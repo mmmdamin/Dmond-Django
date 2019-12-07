@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.db import models
 
@@ -25,7 +25,7 @@ class Logged(models.Model):
         abstract = True
 
 
-class Product(Logged, Deactivable):
+class Product(Logged, Deactivable, models.Model):
     name = models.CharField(verbose_name="اسم", max_length=1000)
     price = models.IntegerField(verbose_name="قیمت", default=0, validators=[MaxValueValidator(1000000000)])
 
@@ -38,8 +38,6 @@ class Product(Logged, Deactivable):
 
 class ProductInstance(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT)
-
-    Product.objects.prefetch_related('productinstance_set').defer('name')
 
 
 class Cart(Logged):
@@ -68,6 +66,6 @@ class Invoice(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.PROTECT)
 
 
-class Member(models.Model):
+class Member(AbstractUser):
     post_code = models.CharField(max_length=10, validators=[RegexValidator(r'(0-9){10}')])
-    user = models.OneToOneField(User, on_delete=models.PROTECT)
+    image = models.FileField(upload_to='profille_picture')
