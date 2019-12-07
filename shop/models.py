@@ -11,6 +11,7 @@ from shop.managers import ActiveManager
 class Deactivable(models.Model):
     deactivated = models.BooleanField(default=False)
 
+    objects = models.Manager()
     active_objects = ActiveManager()
 
     class Meta:
@@ -25,7 +26,7 @@ class Logged(models.Model):
         abstract = True
 
 
-class Product(Logged, Deactivable, models.Model):
+class Product(Logged, Deactivable):
     name = models.CharField(verbose_name="اسم", max_length=1000)
     price = models.IntegerField(verbose_name="قیمت", default=0, validators=[MaxValueValidator(1000000000)])
 
