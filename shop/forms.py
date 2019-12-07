@@ -23,6 +23,3 @@ class SignUpForm(forms.ModelForm):
 
     def clean_password1(self):
         raise ValidationError('x')
-
-    def clean(self):
-        raise self.add_error()
