@@ -1,26 +1,36 @@
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import _user_has_perm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
-
-from shop.forms import SignInForm, SignUpForm
+from django.core.paginator import Paginator
+from shop.forms import SignInForm, SignUpForm, ProductForm
 from shop.models import Product
 
 
 def products(request):
     all_products = Product.active_objects.all()
+    p = Paginator(all_products, 10)
+    page = request.GET.get('page')
+    products = p.get_page(page)
+
     return render(request, "all_products.html", {
-        "products": all_products
+        "products": products
     })
 
 
-@login_required
 def product(request, product_id):
-    product_instance = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, id=product_id)
+    product_form = ProductForm(instance=product)
+
     return render(request, "product.html", {
-        "product": product_instance
+        "product": product,
+        "form": product_form
     })
+
+
+
 
 
 @csrf_exempt

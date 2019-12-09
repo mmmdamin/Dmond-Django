@@ -9,7 +9,7 @@ from shop.managers import ActiveManager
 
 
 class Deactivable(models.Model):
-    deactivated = models.BooleanField(default=False)
+    deactivated = models.BooleanField(default=False, verbose_name="غیرفعال")
 
     objects = models.Manager()
     active_objects = ActiveManager()
@@ -27,14 +27,18 @@ class Logged(models.Model):
 
 
 class Product(Logged, Deactivable):
-    name = models.CharField(verbose_name="اسم", max_length=1000)
-    price = models.IntegerField(verbose_name="قیمت", default=0, validators=[MaxValueValidator(1000000000)])
+    name = models.CharField(verbose_name="اسم", max_length=1000, null=True, blank=True)
+    price = models.IntegerField(verbose_name="قیمت", default=1000, validators=[MaxValueValidator(1000000000)])
 
     def __str__(self):
-        return "Name: {name} - Price: {price}".format(
+        return "اسم: {name} - قیمت: {price}".format(
             name=self.name,
             price=self.price
         )
+
+    class Meta:
+        verbose_name = "محصول"
+        verbose_name_plural = "محصولات"
 
 
 class ProductInstance(models.Model):
@@ -68,5 +72,4 @@ class Invoice(models.Model):
 
 
 class Member(AbstractUser):
-    post_code = models.CharField(max_length=10, validators=[RegexValidator(r'(0-9){10}')])
-    image = models.FileField(upload_to='profille_picture')
+    post_code = models.CharField(max_length=10, validators=[RegexValidator(r'(0-9){10}')], blank=True)

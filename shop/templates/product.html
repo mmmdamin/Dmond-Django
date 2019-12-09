@@ -1,3 +1,4 @@
+{% load user_perm_check %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,10 +6,16 @@
     <title>محصول {{ product.name }}</title>
 </head>
 <body>
-نام:
-{{ product.name }}
-<br>
-قیمت:
-{{ product.price }}
+
+{% user_has_perm user "shop.change_product" as can_edit %}
+{% if can_edit %}
+    {{ form.as_p }}
+{% else %}
+    نام:
+    {{ product.name }}
+    <br>
+    قیمت:
+    {{ product.price }}
+{% endif %}
 </body>
 </html>
