@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import _user_has_perm
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView
@@ -28,9 +29,6 @@ def product(request, product_id):
         "product": product,
         "form": product_form
     })
-
-
-
 
 
 @csrf_exempt
